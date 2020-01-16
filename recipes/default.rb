@@ -15,7 +15,7 @@ include_recipe 'nodejs'
 #packges apt-get
 apt_update
 
-#services
+# resource services
 package 'npm'
 package 'nginx'
 
@@ -27,4 +27,21 @@ end
 
 service 'nginx' do
   action :enable
+end
+
+# resource template
+template '/etc/nginx/sites-available/proxy.conf' do
+  source 'proxy.conf.erb'
+  notifies :restart, 'service[nginx]'
+end
+
+# resource link
+link '/etc/nginx/sites-enabled/proxy.conf' do
+  to '/etc/nginx/sites-available/proxy.conf'
+  notifies :restart, 'service[nginx]'
+end
+
+link '/etc/nginx/sites-enabled/default'do
+  action :delete
+  notifies :restart, 'service[nginx]'
 end
