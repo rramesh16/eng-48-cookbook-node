@@ -1,4 +1,4 @@
-#Node_sample
+# Node_sample
 
 ### Cookbook to install and configure nodejs, npm and nginx
 
@@ -11,4 +11,3 @@
 - writing recipes
 - Metadata file
 - Using supermarket
--
