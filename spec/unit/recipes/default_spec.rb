@@ -42,7 +42,7 @@ describe 'node_sample::default' do
     end
 
     it 'should create a proxy.conf template in /etc/nginx/sites-available' do
-      expect(chef_run).to create_template '/etc/nginx/sites-available/proxy.conf'
+      expect(chef_run).to create_template('/etc/nginx/sites-available/proxy.conf').with_variables(proxy_port: node['nginx']]['proxy_port'])
     end
 
     it 'should create a symlink of proxy.conf from sites-available to sites-enabled' do
@@ -53,7 +53,11 @@ describe 'node_sample::default' do
       expect(chef_run).to delete_link '/etc/nginx/sites-enabled/default'
     end
 
-  end
+    it 'runs_apt_update' do
+      expect(chef_run).to update_apt_update 'updates_sources'
+    end
+
+
 
 #  context 'When all attributes are default, on CentOS 7' do
     # for a complete list of available platforms and versions see:
@@ -63,5 +67,5 @@ describe 'node_sample::default' do
 #    it 'converges successfully' do
   #    expect { chef_run }.to_not raise_error
   #  end
-#  end
+  end
 end

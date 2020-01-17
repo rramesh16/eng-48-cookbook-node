@@ -9,14 +9,13 @@ include_recipe 'apt'
 include_recipe 'nodejs'
 
 
-#npm install
-
-
 #packges apt-get
-apt_update
+apt_update 'updates_sources' do
+  action :update
+end
 
 # resource services
-package 'npm'
+#package 'npm'
 package 'nginx'
 
 nodejs_npm 'pm2'
@@ -32,6 +31,7 @@ end
 # resource template
 template '/etc/nginx/sites-available/proxy.conf' do
   source 'proxy.conf.erb'
+  variables(proxy_port: node['nginx']['proxy_port'])
   notifies :restart, 'service[nginx]'
 end
 
